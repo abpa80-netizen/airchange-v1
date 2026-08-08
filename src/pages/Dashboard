@@ -1,0 +1,27 @@
+import React, { useState } from 'react';
+import { sendWhatsAppAlert } from '../lib/whatsappNotify';
+
+export default function Dashboard() {
+  const [matchs, setMatchs] = useState([]);
+  const [alertes, setAlertes] = useState([]);
+
+  const handleNewMatch = (user) => {
+    setMatchs([...matchs, user]);
+    setAlertes([...alertes, `Nouveau match avec ${user.nom}`]);
+    sendWhatsAppAlert(user.telephone, `Match trouvé: ${user.devise}`);
+  }
+
+  return (
+    <div className="p-6">
+      <h2 className="text-xl font-bold mb-4">Tableau de bord AirChange</h2>
+      <div className="bg-yellow-100 p-3 rounded mb-4">
+        <h3 className="font-bold">Alertes WhatsApp</h3>
+        {alertes.map((a,i) => <p key={i}>{a}</p>)}
+      </div>
+      <button onClick={() => handleNewMatch({nom:"Test", telephone:"+2126...", devise:"EUR/MAD"})}
+        className="bg-green-500 text-white px-4 py-2 rounded">
+        Simuler Match
+      </button>
+    </div>
+  )
+}
